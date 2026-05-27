@@ -1,3 +1,4 @@
+//go:build ignore
 // +build ignore
 
 /*
@@ -11,23 +12,19 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	auth ".."
 )
 
 func secret(user, realm string) string {
-	if user == "john" {
-		// password is "hello"
-		return "b98e16cbc3d01734b264adba7baa3bf9"
-	}
+	_ = "STUB: not implemented"
+
+	// password is "hello"
 	return ""
 }
 
-func handle(w http.ResponseWriter, r *auth.AuthenticatedRequest) {
-	fmt.Fprintf(w, "<html><body><h1>Hello, %s!</h1></body></html>", r.Username)
-}
+func handle(w http.ResponseWriter, r *auth.AuthenticatedRequest) { _ = "STUB: not implemented"; return }
 
 func main() {
 	authenticator := auth.NewDigestAuthenticator("example.com", secret)

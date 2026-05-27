@@ -25,8 +25,8 @@ type AuthenticatedHandlerFunc func(http.ResponseWriter, *AuthenticatedRequest)
 //
 // Typical Authenticator usage is something like:
 //
-//   authenticator := SomeAuthenticator(...)
-//   http.HandleFunc("/", authenticator(my_handler))
+//	authenticator := SomeAuthenticator(...)
+//	http.HandleFunc("/", authenticator(my_handler))
 //
 // Authenticator wrapper checks the user authentication and calls the
 // wrapped function only after authentication has succeeded. Otherwise,
@@ -52,16 +52,7 @@ type Info struct {
 
 // UpdateHeaders updates headers with this Info's ResponseHeaders. It is
 // safe to call this function on nil Info.
-func (i *Info) UpdateHeaders(headers http.Header) {
-	if i == nil {
-		return
-	}
-	for k, values := range i.ResponseHeaders {
-		for _, v := range values {
-			headers.Add(k, v)
-		}
-	}
-}
+func (i *Info) UpdateHeaders(headers http.Header) { _ = "STUB: not implemented"; return }
 
 type key int // used for context keys
 
@@ -86,13 +77,7 @@ type AuthenticatorInterface interface {
 
 // FromContext returns authentication information from the context or
 // nil if no such information present.
-func FromContext(ctx context.Context) *Info {
-	info, ok := ctx.Value(infoKey).(*Info)
-	if !ok {
-		return nil
-	}
-	return info
-}
+func FromContext(ctx context.Context) *Info { _ = "STUB: not implemented"; return nil }
 
 // AuthUsernameHeader is the header set by JustCheck functions. It
 // contains an authenticated username (if authentication was
@@ -103,8 +88,6 @@ const AuthUsernameHeader = "X-Authenticated-Username"
 // authenticator to successfully authenticate a user before calling
 // wrapped http.HandlerFunc.
 func JustCheck(auth AuthenticatorInterface, wrapped http.HandlerFunc) http.HandlerFunc {
-	return auth.Wrap(func(w http.ResponseWriter, ar *AuthenticatedRequest) {
-		ar.Header.Set(AuthUsernameHeader, ar.Username)
-		wrapped(w, &ar.Request)
-	})
+	_ = "STUB: not implemented"
+	return *new(http.HandlerFunc)
 }

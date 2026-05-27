@@ -1,14 +1,9 @@
 package auth
 
 import (
-	"bytes"
 	"context"
-	"crypto/sha1"
-	"crypto/subtle"
-	"encoding/base64"
 	"errors"
 	"net/http"
-	"strings"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -63,66 +58,27 @@ var _ = (AuthenticatorInterface)((*BasicAuth)(nil))
 // CheckAuth checks the username/password combination from the
 // request. Returns either an empty string (authentication failed) or
 // the name of the authenticated user.
-func (a *BasicAuth) CheckAuth(r *http.Request) string {
-	user, password, ok := r.BasicAuth()
-	if !ok {
-		return ""
-	}
-
-	secret := a.Secrets(user, a.Realm)
-	if secret == "" {
-		return ""
-	}
-
-	if !CheckSecret(password, secret) {
-		return ""
-	}
-
-	return user
-}
+func (a *BasicAuth) CheckAuth(r *http.Request) string { _ = "STUB: not implemented"; return "" }
 
 // CheckSecret returns true if the password matches the encrypted
 // secret.
-func CheckSecret(password, secret string) bool {
-	compare := compareFuncs[0].compare
-	for _, cmp := range compareFuncs[1:] {
-		if strings.HasPrefix(secret, cmp.prefix) {
-			compare = cmp.compare
-			break
-		}
-	}
-	return compare([]byte(secret), []byte(password)) == nil
-}
+func CheckSecret(password, secret string) bool { _ = "STUB: not implemented"; return false }
 
 func compareShaHashAndPassword(hashedPassword, password []byte) error {
-	d := sha1.New()
-	d.Write(password)
-	if subtle.ConstantTimeCompare(hashedPassword[5:], []byte(base64.StdEncoding.EncodeToString(d.Sum(nil)))) != 1 {
-		return errMismatchedHashAndPassword
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func compareMD5HashAndPassword(hashedPassword, password []byte) error {
-	parts := bytes.SplitN(hashedPassword, []byte("$"), 4)
-	if len(parts) != 4 {
-		return errMismatchedHashAndPassword
-	}
-	magic := []byte("$" + string(parts[1]) + "$")
-	salt := parts[2]
-	if subtle.ConstantTimeCompare(hashedPassword, MD5Crypt(password, salt, magic)) != 1 {
-		return errMismatchedHashAndPassword
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // RequireAuth is an http.HandlerFunc for BasicAuth which initiates
 // the authentication process (or requires reauthentication).
 func (a *BasicAuth) RequireAuth(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set(contentType, a.Headers.V().UnauthContentType)
-	w.Header().Set(a.Headers.V().Authenticate, `Basic realm="`+a.Realm+`"`)
-	w.WriteHeader(a.Headers.V().UnauthCode)
-	w.Write([]byte(a.Headers.V().UnauthResponse))
+	_ = "STUB: not implemented"
+	return
 }
 
 // Wrap returns an http.HandlerFunc, which wraps
@@ -132,24 +88,14 @@ func (a *BasicAuth) RequireAuth(w http.ResponseWriter, r *http.Request) {
 //
 // Deprecated: new code should use NewContext instead.
 func (a *BasicAuth) Wrap(wrapped AuthenticatedHandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		if username := a.CheckAuth(r); username == "" {
-			a.RequireAuth(w, r)
-		} else {
-			ar := &AuthenticatedRequest{Request: *r, Username: username}
-			wrapped(w, ar)
-		}
-	}
+	_ = "STUB: not implemented"
+	return *new(http.HandlerFunc)
 }
 
 // NewContext returns a context carrying authentication information for the request.
 func (a *BasicAuth) NewContext(ctx context.Context, r *http.Request) context.Context {
-	info := &Info{Username: a.CheckAuth(r), ResponseHeaders: make(http.Header)}
-	info.Authenticated = (info.Username != "")
-	if !info.Authenticated {
-		info.ResponseHeaders.Set(a.Headers.V().Authenticate, `Basic realm="`+a.Realm+`"`)
-	}
-	return context.WithValue(ctx, infoKey, info)
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 // NewBasicAuthenticator returns a BasicAuth initialized with provided
@@ -157,5 +103,6 @@ func (a *BasicAuth) NewContext(ctx context.Context, r *http.Request) context.Con
 //
 // Deprecated: new code should construct BasicAuth values directly.
 func NewBasicAuthenticator(realm string, secrets SecretProvider) *BasicAuth {
-	return &BasicAuth{Realm: realm, Secrets: secrets}
+	_ = "STUB: not implemented"
+	return nil
 }

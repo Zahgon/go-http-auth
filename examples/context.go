@@ -1,3 +1,4 @@
+//go:build ignore
 // +build ignore
 
 /*
@@ -12,17 +13,15 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	auth ".."
 )
 
 func secret(user, realm string) string {
-	if user == "john" {
-		// password is "hello"
-		return "b98e16cbc3d01734b264adba7baa3bf9"
-	}
+	_ = "STUB: not implemented"
+
+	// password is "hello"
 	return ""
 }
 
@@ -33,24 +32,18 @@ type contextHandler interface {
 type contextHandlerFunc func(ctx context.Context, w http.ResponseWriter, r *http.Request)
 
 func (f contextHandlerFunc) ServeHTTP(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-	f(ctx, w, r)
+	_ = "STUB: not implemented"
+	return
 }
 
 func handle(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-	authInfo := auth.FromContext(ctx)
-	authInfo.UpdateHeaders(w.Header())
-	if authInfo == nil || !authInfo.Authenticated {
-		http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
-		return
-	}
-	fmt.Fprintf(w, "<html><body><h1>Hello, %s!</h1></body></html>", authInfo.Username)
+	_ = "STUB: not implemented"
+	return
 }
 
 func authenticatedHandler(a auth.AuthenticatorInterface, h contextHandler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		ctx := a.NewContext(context.Background(), r)
-		h.ServeHTTP(ctx, w, r)
-	})
+	_ = "STUB: not implemented"
+	return *new(http.Handler)
 }
 
 func main() {

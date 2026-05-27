@@ -1,34 +1,15 @@
 package auth
 
 import (
-	"bytes"
-	"crypto/md5"
-	"crypto/rand"
-	"encoding/base64"
 	"fmt"
 	"net/http"
-	"strings"
 )
 
 // RandomKey returns a random 16-byte base64 alphabet string
-func RandomKey() string {
-	k := make([]byte, 12)
-	for bytes := 0; bytes < len(k); {
-		n, err := rand.Read(k[bytes:])
-		if err != nil {
-			panic("rand.Read() failed")
-		}
-		bytes += n
-	}
-	return base64.StdEncoding.EncodeToString(k)
-}
+func RandomKey() string { _ = "STUB: not implemented"; return "" }
 
 // H function for MD5 algorithm (returns a lower-case hex MD5 digest)
-func H(data string) string {
-	digest := md5.New()
-	digest.Write([]byte(data))
-	return fmt.Sprintf("%x", digest.Sum(nil))
-}
+func H(data string) string { _ = "STUB: not implemented"; return "" }
 
 // ParseList parses a comma-separated list of values as described by
 // RFC 2068 and returns list elements.
@@ -36,40 +17,9 @@ func H(data string) string {
 // Lifted from https://code.google.com/p/gorilla/source/browse/http/parser/parser.go
 // which was ported from urllib2.parse_http_list, from the Python
 // standard library.
-func ParseList(value string) []string {
-	var list []string
-	var escape, quote bool
-	b := new(bytes.Buffer)
-	for _, r := range value {
-		switch {
-		case escape:
-			b.WriteRune(r)
-			escape = false
-		case quote:
-			if r == '\\' {
-				escape = true
-			} else {
-				if r == '"' {
-					quote = false
-				}
-				b.WriteRune(r)
-			}
-		case r == ',':
-			list = append(list, strings.TrimSpace(b.String()))
-			b.Reset()
-		case r == '"':
-			quote = true
-			b.WriteRune(r)
-		default:
-			b.WriteRune(r)
-		}
-	}
-	// Append last part.
-	if s := b.String(); s != "" {
-		list = append(list, strings.TrimSpace(s))
-	}
-	return list
-}
+func ParseList(value string) []string { _ = "STUB: not implemented"; return nil }
+
+// Append last part.
 
 // ParsePairs extracts key/value pairs from a comma-separated list of
 // values as described by RFC 2068 and returns a map[key]value. The
@@ -78,27 +28,13 @@ func ParseList(value string) []string {
 // string.
 //
 // Lifted from https://code.google.com/p/gorilla/source/browse/http/parser/parser.go
-func ParsePairs(value string) map[string]string {
-	m := make(map[string]string)
-	for _, pair := range ParseList(strings.TrimSpace(value)) {
-		switch i := strings.Index(pair, "="); {
-		case i < 0:
-			// No '=' in pair, treat whole string as a 'key'.
-			m[pair] = ""
-		case i == len(pair)-1:
-			// Malformed pair ('key=' with no value), keep key with empty value.
-			m[pair[:i]] = ""
-		default:
-			v := pair[i+1:]
-			if v[0] == '"' && v[len(v)-1] == '"' {
-				// Unquote it.
-				v = v[1 : len(v)-1]
-			}
-			m[pair[:i]] = v
-		}
-	}
-	return m
-}
+func ParsePairs(value string) map[string]string { _ = "STUB: not implemented"; return nil }
+
+// No '=' in pair, treat whole string as a 'key'.
+
+// Malformed pair ('key=' with no value), keep key with empty value.
+
+// Unquote it.
 
 // Headers contains header and error codes used by authenticator.
 type Headers struct {
@@ -112,12 +48,7 @@ type Headers struct {
 
 // V returns NormalHeaders when h is nil, or h otherwise. Allows to
 // use uninitialized *Headers values in structs.
-func (h *Headers) V() *Headers {
-	if h == nil {
-		return NormalHeaders
-	}
-	return h
-}
+func (h *Headers) V() *Headers { _ = "STUB: not implemented"; return nil }
 
 var (
 	// NormalHeaders are the regular Headers used by an HTTP Server for
